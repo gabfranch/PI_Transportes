@@ -114,52 +114,7 @@ def graficos():
 
 #Gráficos
 
-    # graf1
-    # st.title('Comparação das Emissões de GEE nos Transporte de Carga Rodoviário, Ferroviário e Aquaviário no Brasil')
-    # #df_gas = df_filtrado[df_filtrado['Meio de Transporte'].isin(['Hidroviário', 'Ferroviário', 'Rodoviário'])]
-    # ordem_modais = ['Hidroviário', 'Ferroviário', 'Rodoviário']
-    # df_filtrado['Meio de Transporte'] = pd.Categorical(df_filtrado['Meio de Transporte'], categories=ordem_modais, ordered=True)
-
-    # # Somar emissões por gás para todos os modais
-    # total_por_gas = df_filtrado.groupby('Gás')[colunas_anos].sum()
-    # # Selecionar os 9 maiores gases
-    # gases_maiores = total_por_gas.nlargest(9,total_por_gas)
-    # df_filtrado = df_filtrado[df_filtrado['Gás'].isin(gases_maiores)]
-
-    # # Agrupar dados por gás e modal
-    # df_agrupado = (
-    #     df_filtrado.groupby(['Gás', 'Meio de Transporte'])[colunas_anos]
-    #     .sum()
-    #     .reset_index()
-    # )
-
-    # df_agrupado['Gás'] = pd.Categorical(df_agrupado['Gás'], categories=gases_maiores, ordered=True)
-    # fig = px.bar(
-    #     df_agrupado,
-    #     x='Gás',
-    #     y='2023',
-    #     color='Meio de Transporte',
-    #     barmode='group',
-    #     category_orders={'Meio de Transporte': ordem_modais, 'Gás': gases_maiores},
-    #     labels={
-    #         '2023': 'Emissões (t)',
-    #         'Meio de Transporte': 'Modal de Transporte',
-    #         'Gás': 'Tipo de Gás'
-    #     },
-    # )
-
-    # fig.update_traces(texttemplate='%{y:.4s}', textposition='outside')
-    # fig.update_layout(
-    #     uniformtext_minsize=8,
-    #     uniformtext_mode='hide',
-    #     xaxis_tickangle=-45,
-    #     yaxis_title='Emissões (t)',
-    #     legend_title_text='Modal de Transporte',
-    #     margin=dict(t=80, b=150),
-    #     height=600,
-    # )
-
-    # st.plotly_chart(fig, use_container_width=True)
+    
 
     emissao_gas_group = df_filtrado.groupby(['Gás', 'Meio de Transporte'], as_index=False)[colunas_anos].sum()
     emissao_gas_group['Total'] = emissao_gas_group[colunas_anos].sum(axis=1)
@@ -173,7 +128,7 @@ def graficos():
             y='Total',
             color="Meio de Transporte",
             barmode="group",
-            title="Top 5 Estados com mais emissão de 2020 à 2023"
+            title="Emissões de GEE nas Malhas de Transporte"
         )
     emissao_gas_10.update_traces(texttemplate='%{y:.4s}', textposition='outside')
     emissao_gas_10.update_layout(
