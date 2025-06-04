@@ -9,6 +9,17 @@ from streamlit_option_menu import option_menu
 # Configuração da página
 st.set_page_config(page_title='Dashboard Emissão de Carbono - Transportes!', page_icon='🚚', layout='wide')
 
+def formatar_compacto(valor):
+    if valor >= 1_000_000_000:
+        return f'{valor / 1_000_000_000:.2f}B'
+    elif valor >= 1_000_000:
+        return f'{valor / 1_000_000:.2f}M'
+    elif valor >= 1_000:
+        return f'{valor / 1_000:.2f}K'
+    else:
+        return f'{valor:.2f}'
+
+
 # Leitura das bases de dados
 df_transportes = pd.read_excel('base_transportes.xlsx')
 df_unificado = pd.read_excel('base_transportes_leve.xlsx')
@@ -80,15 +91,17 @@ def gerar_graficos():
     total_credito = df_filtrado['Credito de Carbono'].sum()
 
     # Exibindo as métricas
-    metrica1, metrica2, metrica3, metrica4 = st.columns(4)
+    metrica1, metrica2= st.columns(2)
     with metrica1:
-         st.metric('Total de Emissão de Carbono', value=f'{total_emissao:.2f}')
+        st.metric('Total de Emissão de Carbono (em Toneladas)', value=formatar_compacto(total_emissao))
     with metrica2:
-         st.metric('Média de Emissão de Carbono', value=f'{media_emissao:.2f}')
+        st.metric('Média de Emissão de Carbono (em Toneladas)', value=formatar_compacto(media_emissao))
+    
+    metrica3, metrica4 = st.columns(2)
     with metrica3:
-         st.metric('Total de Crédito de Carbono', value=f'{total_credito:.2f}')
+        st.metric('Total de Crédito de Carbono (em Toneladas)', value=formatar_compacto(total_credito))
     with metrica4:
-         st.metric('Porcentagem de Crédito de Carbono', value=f'{porcentagem_credito:.0f}%')
+        st.metric('Porcentagem de Crédito de Carbono', value=f'{int(porcentagem_credito)}%')
 
     # Gráfico 1 - Emissões de CO2e por ano e meio de transporte
     df_co2 = df_unificado[df_unificado['Gás'] == 'CO2e (t) GWP-AR6']
